@@ -9,7 +9,7 @@
 
 using namespace std;
 
-void addStudent(string filename, int *studentCount, int *inStateFees, int *outStateFees){
+void addStudent(string filename, int *studentCount, int *inStateTuition, int *outStateTuition){
 getchar();
 ofstream file(filename.c_str(), ios::app);
 string name;
@@ -96,10 +96,10 @@ else
 file << " | Food Plan: None" << plan;
 
 if(state==1){
-*inStateFees = *inStateFees + tutionFees + foodPlan;
+*inStateTuition = *inStateTuition + tutionFees + foodPlan;
 }
 else if(state==2){
-*outStateFees = *outStateFees + tutionFees + foodPlan;
+*outStateTuition = *outStateTuition + tutionFees + foodPlan;
 }
 
 }
@@ -112,14 +112,14 @@ function generate the final report by adding total fees details
 Argument1: filename
 Argument2: Pointer to studnetCount
 */
-void generateReport(const string filename, const int *studentCount, const int *inStateFees, const int *outStateFees){
+void generateReport(const string filename, const int *studentCount, const int *inStateTuition, const int *outStateTuition){
 if(*studentCount==0){
 cout << endl << "Error: There should be atleast one record to generate report.";
 }
 else{
 ofstream file(filename.c_str(), ios::app);
-file << endl << "Tuition Paid for In-State Students per semester: " << *inStateFees;
-file << endl << "Tuition Paid for Out-of-State Students per semester : " << *outStateFees;
+file << endl << "Tuition Paid for In-State Students per semester: " << *inStateTuition;
+file << endl << "Tuition Paid for Out-of-State Students per semester : " << *outStateTuition;
 file.close();
 cout << endl << "Success: " << filename << " generated ";		
 }
@@ -133,8 +133,8 @@ int main(int argc, char** argv) {
 int choice = 0;
 string fileName = "student_report.txt";
 int studentCount =0;
-int inStateFees = 0;
-int outStateFees =0;
+int inStateTuition = 0;
+int outStateTuition =0;
 
 //empty file if it already exist
 ofstream file(fileName.c_str(), ios::out);
@@ -160,9 +160,9 @@ cout << "\n\n Enter your choice : ";
 cin >> choice;
 
 switch(choice){
-case 1: addStudent(fileName, &studentCount, &inStateFees, &outStateFees);
+case 1: addStudent(fileName, &studentCount, &inStateTuition, &outStateTuition);
 	break;
-case 2: generateReport(fileName, &studentCount, &inStateFees, &outStateFees);
+case 2: generateReport(fileName, &studentCount, &inStateTuition, &outStateTuition);
 	break;
 case -1: cout << endl << "Thank you";
 	break;
