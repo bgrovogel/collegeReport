@@ -9,14 +9,14 @@
 
 using namespace std;
 
-void enterNewStudent(string filename, int *studentCount, int *inStateTuition, int *outStateTuition){
+void enterNewStudent(string inFilename, int *studentCount, int *inStateTuition, int *outStateTuition){
 getchar();
-ofstream file(filename.c_str(), ios::app);
+ofstream inFile(inFilename.c_str(), ios::app);
 string name;
 cout << "\n Enter Student's Name: ";
 getline(cin, name);
 
-file << endl << name;
+inFile << endl << name;
 
 int state=-1;
 cout << endl << "1 for In State tuition: ";
@@ -25,52 +25,52 @@ cout << endl << "Enter here: ";
 cin >> state;
 
 if(state==1)
-file << " | In State";
+inFile << " | In State";
 else if(state==2)
-file << " | Out Of State";
+inFile << " | Out Of State";
 else
-file <<" | NA";
+inFile <<" | NA";
 
 string major;
 cout << endl << "Enter Major: ";
 cin >> major;
 getline(cin, major);
 //dealing with some minor issues here not reading first word ** has to deal with the getline(cin, major) code 
-file << " | Major: " << major;
+inFile << " | Major: " << major;
 
 int degreeYears;
 cout << endl << "How many years of college does your degree require? ";
 cin >> degreeYears;
 
-file << " | Years: " << degreeYears;
+inFile << " | Years: " << degreeYears;
 
 string minor;
 cout << endl << "Enter Minor: ";
 cin >> minor;
 getline(cin, minor);
 //also not reading first word
-file << " | Minor: " << minor;
+inFile << " | Minor: " << minor;
 
 double gpa;
 cout << endl << "Enter GPA: ";
 cin >> gpa;
 
-file << " | GPA: " << gpa;
+inFile << " | GPA: " << gpa;
 
 int tutionFees;
 cout << endl << "Enter Tution: $";
 cin >> tutionFees;
 
-file << " | Tution: " << tutionFees;
+inFile << " | Tution: $" << tutionFees;
 
 //choice for a dorm or not with prices
-char aptChoice;
+char dormChoice;
 cout << endl << "Do you plan on living on campus? y/n: ";
-cin >> aptChoice;
+cin >> dormChoice;
 
 int dormPlan = 0;
 
-if(aptChoice=='Y' || aptChoice=='y'){
+if(dormChoice=='Y' || dormChoice=='y'){
 char dorm;
 cout << endl << " # Select Which Dorm You Would Like #";
 cout << endl << "A -> 2 bedrooms/1 bath - $575/month";
@@ -85,7 +85,7 @@ cin >> dorm;
 
 switch(dorm){     	
 case 'A':
-case 'a': dormPlan = 575;   break;
+case 'a': dormPlan = 575; break;
 case 'B':
 case 'b': dormPlan = 750; break;
 case 'C':
@@ -94,11 +94,12 @@ case 'D':
 case 'd' : dormPlan =  975; break;
 default: cout << endl << "Invalid Choice..";
 }
+
+if(dormPlan != 0)
+inFile << " | Dorm Plan: "<< dormPlan;
 }
-if(dormPlan!=0)
-file << " | Dorm Plan: " << dormPlan;
 else
-file << " | Dorm Plan: None" << dormPlan;
+inFile << " | Dorm Plan: None";
 
 // choice for food plan with prices
 char choice;
@@ -120,7 +121,7 @@ cin >> plan;
 
 switch(plan){     	
 case 'A':
-case 'a': foodPlan = 675;   break;
+case 'a': foodPlan = 675; break;
 case 'B':
 case 'b': foodPlan = 1250; break;
 case 'C':
@@ -130,10 +131,8 @@ case 'd' : foodPlan =  1700; break;
 default: cout << endl << "Invalid Choice..";
 }
 
-if(foodPlan!=0)
-file << " | Food Plan: " << foodPlan;
-else
-file << " | Food Plan: None" << foodPlan;
+if(foodPlan !=0 )
+inFile << " | Food Plan: " << foodPlan;
 
 if(state==1){
 *inStateTuition = *inStateTuition + tutionFees + foodPlan + (dormPlan*4);
@@ -143,25 +142,29 @@ else if(state==2){
 }
 
 }
+else 
+inFile << " | Food Plan: None";
+
 *studentCount = *studentCount + 1;
-file.close();
+inFile.close();
 }
 
 /*
 function generate the final report by adding total fees details
-Argument1: filename
+Argument1: inFilename
 Argument2: Pointer to studnetCount
 */
-void generateReport(const string filename, const int *studentCount, const int *inStateTuition, const int *outStateTuition){
+void generateReport(const string inFilename, const int *studentCount, const int *inStateTuition, const int *outStateTuition){
 if(*studentCount==0){
 cout << endl << "Error: There should be atleast one record to generate report.";
 }
 else{
-ofstream file(filename.c_str(), ios::app);
-file << endl << "Tuition Paid for In-State Students per semester: " << *inStateTuition;
-file << endl << "Tuition Paid for Out-of-State Students per semester : " << *outStateTuition;
-file.close();
-cout << endl << "Success: " << filename << " generated ";		
+ofstream inFile(inFilename.c_str(), ios::app);
+inFile << endl << "Tuition Paid for In-State Students per semester: " << *inStateTuition;
+inFile << endl << "Tuition Paid for Out-of-State Students per semester : " << *outStateTuition;
+inFile << endl << "Currently we have: " << *studentCount << " student enrolled";
+inFile.close();
+cout << endl << "Success: " << inFilename << " generated ";		
 }
 	
 }
@@ -170,14 +173,14 @@ cout << endl << "Success: " << filename << " generated ";
 int main(int argc, char** argv) {
 	
 int choice = 0;
-string fileName = "student_report.txt";
+string inFileName = "student_report.txt";
 int studentCount =0;
 int inStateTuition = 0;
 int outStateTuition =0;
 
-//empty file if it already exist
-ofstream file(fileName.c_str(), ios::out);
-file.close();
+//empty inFile if it already exist
+ofstream inFile(inFileName.c_str(), ios::out);
+inFile.close();
 
 while(choice!=-1){
 cout << R"( 
@@ -199,9 +202,9 @@ cout << "\n\n Enter your choice : ";
 cin >> choice;
 
 switch(choice){
-case 1: enterNewStudent(fileName, &studentCount, &inStateTuition, &outStateTuition);
+case 1: enterNewStudent(inFileName, &studentCount, &inStateTuition, &outStateTuition);
 	break;
-case 2: generateReport(fileName, &studentCount, &inStateTuition, &outStateTuition);
+case 2: generateReport(inFileName, &studentCount, &inStateTuition, &outStateTuition);
 	break;
 case -1: cout << endl << "Thank you";
 	break;
