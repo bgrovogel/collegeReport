@@ -9,23 +9,25 @@
 
 using namespace std;
 
-void addStudent(string filename, int *studentCount, int *inStateTuition, int *outStateTuition){
+void enterNewStudent(string filename, int *studentCount, int *inStateTuition, int *outStateTuition){
 getchar();
 ofstream file(filename.c_str(), ios::app);
 string name;
-cout << endl << "\n Enter Student's Name: ";
+cout << "\n Enter Student's Name: ";
 getline(cin, name);
 
 file << endl << name;
 
 int state=-1;
-cout << endl << "Press 1 for In-State or 2 for Out-Of-State tuition prices: ";
+cout << endl << "1 for In State tuition: ";
+cout << endl << "2 for Out of State tuition: " << endl;
+cout << endl << "Enter here: ";
 cin >> state;
 
 if(state==1)
-file << " | In-State";
+file << " | In State";
 else if(state==2)
-file << " | Out-Of-State";
+file << " | Out Of State";
 else
 file <<" | NA";
 
@@ -33,7 +35,7 @@ string major;
 cout << endl << "Enter Major: ";
 cin >> major;
 getline(cin, major);
-//dealing with some minor issues here not reading first word
+//dealing with some minor issues here not reading first word ** has to deal with the getline(cin, major) code 
 file << " | Major: " << major;
 
 int degreeYears;
@@ -61,6 +63,44 @@ cin >> tutionFees;
 
 file << " | Tution: " << tutionFees;
 
+//choice for a dorm or not with prices
+char aptChoice;
+cout << endl << "Do you plan on living on campus? y/n: ";
+cin >> aptChoice;
+
+int dormPlan = 0;
+
+if(aptChoice=='Y' || aptChoice=='y'){
+char dorm;
+cout << endl << " # Select Which Dorm You Would Like #";
+cout << endl << "A -> 2 bedrooms/1 bath - $575/month";
+cout << endl << "B -> studio/1 bath - $750/month";
+cout << endl << "C -> 4 bedrooms/2 baths - $475/month";
+cout << endl << "D -> 1 bedroom/1 bath - $975/month";
+
+cout << endl << endl << "Please note that each dorm is accounting for 1 person per room. This includes a shared living room and kitchen with up to 2 baths. Main difference between a one bedroom dorm and a studio is the studio is all one big room.";
+
+cout << endl << endl << "Select any alphabet ( A, B, C, D ) : ";
+cin >> dorm;
+
+switch(dorm){     	
+case 'A':
+case 'a': dormPlan = 575;   break;
+case 'B':
+case 'b': dormPlan = 750; break;
+case 'C':
+case 'c': dormPlan =  475; break;
+case 'D':
+case 'd' : dormPlan =  975; break;
+default: cout << endl << "Invalid Choice..";
+}
+}
+if(dormPlan!=0)
+file << " | Dorm Plan: " << dormPlan;
+else
+file << " | Dorm Plan: None" << dormPlan;
+
+// choice for food plan with prices
 char choice;
 cout << endl << "Do you want to enroll for a food plan? y/n : ";
 cin >> choice;
@@ -87,19 +127,19 @@ case 'C':
 case 'c': foodPlan =  1475; break;
 case 'D':
 case 'd' : foodPlan =  1700; break;
-default: cout<<endl<<"Invalid Choice..";
+default: cout << endl << "Invalid Choice..";
 }
 
 if(foodPlan!=0)
-file << " | Food Plan: " << plan;
+file << " | Food Plan: " << foodPlan;
 else
-file << " | Food Plan: None" << plan;
+file << " | Food Plan: None" << foodPlan;
 
 if(state==1){
-*inStateTuition = *inStateTuition + tutionFees + foodPlan;
+*inStateTuition = *inStateTuition + tutionFees + foodPlan + (dormPlan*4);
 }
 else if(state==2){
-*outStateTuition = *outStateTuition + tutionFees + foodPlan;
+*outStateTuition = *outStateTuition + tutionFees + foodPlan + (dormPlan*4);
 }
 
 }
@@ -125,7 +165,6 @@ cout << endl << "Success: " << filename << " generated ";
 }
 	
 }
-
 
 //program runs from this function
 int main(int argc, char** argv) {
@@ -160,7 +199,7 @@ cout << "\n\n Enter your choice : ";
 cin >> choice;
 
 switch(choice){
-case 1: addStudent(fileName, &studentCount, &inStateTuition, &outStateTuition);
+case 1: enterNewStudent(fileName, &studentCount, &inStateTuition, &outStateTuition);
 	break;
 case 2: generateReport(fileName, &studentCount, &inStateTuition, &outStateTuition);
 	break;
@@ -174,3 +213,4 @@ default: cout << endl << "Invalid Choice.."; getchar();
 
 return 0;
 }
+
