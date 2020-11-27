@@ -6,6 +6,7 @@
 //https://stackoverflow.com/questions/9469264/c-cin-only-reads-the-first-word
 //http://patorjk.com/software/taag/#p=display&h=3&v=3&f=Big%20Money-ne&t=College%20Report
 //https://www.cppbuzz.com/
+//https://answers.yahoo.com/question/index?qid=20130217220526AAisrh4
 
 using namespace std;
 
