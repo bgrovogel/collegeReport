@@ -33,9 +33,10 @@ inFile <<" | NA";
 
 string major;
 cout << endl << "Enter Major: ";
-cin >> major;
-getline(cin, major);
-//dealing with some minor issues here not reading first word ** has to deal with the getline(cin, major) code 
+// cin >> major; //preventing the first word of the major from being read
+cin.get(); // helps capture the first word 
+getline(cin, major); // reads rest of line
+
 inFile << " | Major: " << major;
 
 int degreeYears;
@@ -46,9 +47,10 @@ inFile << " | Years: " << degreeYears;
 
 string minor;
 cout << endl << "Enter Minor: ";
-cin >> minor;
-getline(cin, minor);
-//also not reading first word
+// cin >> minor; //this was preventing the first word of the minor from being read
+cin.get(); // helps caputre the first word
+getline(cin, minor); // reads rest of line
+
 inFile << " | Minor: " << minor;
 
 double gpa;
