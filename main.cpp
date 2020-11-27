@@ -60,11 +60,11 @@ cin >> gpa;
 
 inFile << " | GPA: " << gpa;
 
-int tutionFees;
+float tuitionCost;
 cout << endl << "Enter Tution: $";
-cin >> tutionFees;
+cin >> tuitionCost;
 
-inFile << " | Tution: $" << tutionFees;
+inFile << " | Tution: $" << tuitionCost;
 
 //choice for a dorm or not with prices
 char dormChoice;
@@ -98,9 +98,9 @@ case 'd' : dormPlan =  975; break;
 default: cout << endl << "Invalid Choice..";
 }
 
+}
 if(dormPlan != 0)
 inFile << " | Dorm Plan: "<< dormPlan;
-}
 else
 inFile << " | Dorm Plan: None";
 
@@ -133,29 +133,23 @@ case 'D':
 case 'd' : foodPlan =  1700; break;
 default: cout << endl << "Invalid Choice..";
 }
-
 if(foodPlan !=0 )
 inFile << " | Food Plan: " << foodPlan;
-
-if(state==1){
-*inStateTuition = *inStateTuition + tutionFees + foodPlan + (dormPlan*4);
-}
-else if(state==2){
-*outStateTuition = *outStateTuition + tutionFees + foodPlan + (dormPlan*4);
-}
-
 }
 else 
 inFile << " | Food Plan: None";
 
+if(state==1){
+*inStateTuition = tuitionCost + foodPlan + (dormPlan*4);
+}
+else if(state==2){
+*outStateTuition = tuitionCost + foodPlan + (dormPlan*4);
+}
 *studentCount = *studentCount + 1;
 inFile.close();
 }
-
 /*
 function generate the final report by adding total fees details
-Argument1: inFilename
-Argument2: Pointer to studnetCount
 */
 void generateReport(const string inFilename, const int *studentCount, const int *inStateTuition, const int *outStateTuition){
 if(*studentCount==0){
@@ -163,8 +157,8 @@ cout << endl << "Error: There should be atleast one record to generate report.";
 }
 else{
 ofstream inFile(inFilename.c_str(), ios::app);
-inFile << endl << "Tuition Paid for In-State Students per semester: " << *inStateTuition;
-inFile << endl << "Tuition Paid for Out-of-State Students per semester : " << *outStateTuition;
+inFile << endl << endl << "Tuition Paid for In-State Students per semester: " << *inStateTuition << endl;
+inFile << endl << "Tuition Paid for Out-of-State Students per semester : " << *outStateTuition << endl;
 inFile << endl << "Currently we have: " << *studentCount << " student enrolled";
 inFile.close();
 cout << endl << "Success: " << inFilename << " generated ";		
@@ -178,7 +172,7 @@ int main(int argc, char** argv) {
 int choice = 0;
 string inFileName = "student_report.txt";
 int studentCount =0;
-int inStateTuition = 0;
+int inStateTuition =0;
 int outStateTuition =0;
 
 //empty inFile if it already exist
@@ -219,4 +213,3 @@ default: cout << endl << "Invalid Choice.."; getchar();
 
 return 0;
 }
-
